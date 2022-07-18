@@ -5,7 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const app = express()
 const port = 3002
-const cakeRouter = require('./routes/orders')
+const orderRouter = require('./routes/orders')
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -13,7 +13,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', cakeRouter);
+app.use('/', orderRouter);
 
 
 // catch 404 and forward to error handler
@@ -33,7 +33,7 @@ app.use(function (err, req, res, next) {
 
     // render the error page
     res.status(err.status || 500);
-    res.render('error');
+    // res.render('error');
 });
 
 module.exports = app;

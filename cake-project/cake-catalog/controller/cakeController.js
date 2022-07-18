@@ -1,6 +1,6 @@
 const cakeModel = require('../models/cake');
 const express = require('express');
-
+const axios = require('axios');
 // create a controller in express
 const router = express.Router();
 const data = require('../models/data');
@@ -31,8 +31,7 @@ exports.getCakeByPrice = (req, res) => {
 
     let min = parseInt(req.params.min);
     let max = parseInt(req.params.max);
-    cakeModel.find({}, (err, cakes) => 
-        {
+    cakeModel.find({}, (err, cakes) => {
         if (err) {
             res.send(err);
         } else {
@@ -40,13 +39,11 @@ exports.getCakeByPrice = (req, res) => {
             // let result = cakes.filter(cake => cake.price >= min && cake.price <= max);
             let filteredCakes = []
             cakes.forEach(element => {
-                if (parseInt(element.price) >= min && parseInt(element.price) <= max) 
-                {
+                if (parseInt(element.price) >= min && parseInt(element.price) <= max) {
                     // console.log(element.price);
                     filteredCakes.push(element);
-                } else 
-                {
-                
+                } else {
+
                 }
             });
             res.json(filteredCakes);
@@ -56,12 +53,27 @@ exports.getCakeByPrice = (req, res) => {
 
 //add cake to the cart
 exports.addItemToCart = (req, res) => {
-     //console.log("Add Item to the basket...");
-     cakeModel.insertOne({ name: req.params.name }, (err, cakes) => {
+    console.log('add item to cart');
+    let name = req.params.name;
+    console.log(name);
+    cakeModel.find({ name: name }, (err, cakes) => {
         if (err) {
-            res.send(err);
+            // res.send(err);
         } else {
-            res.json(cakes);
+            // console.log(cakes);
+            // res.json(cakes[0]);
+            // return cakes[0];
+            if (cakes.length > 0) {
+                axios.post('http://localhost:8080/cart/add/' + cakes[0].name, cakes[0]).then(response => {
+                    console.log(response);
+                    res.json(response.data);
+                }).catch(error => {
+                    res.json(error);
+                    // console.log(error);
+                });
+            } else {
+                res.json({ message: 'No cake found' });
+            }
         }
-    })
-   }
+    });
+}

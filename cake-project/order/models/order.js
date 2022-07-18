@@ -19,7 +19,7 @@ var orderSchema = new mongoose.Schema({
     cakeid: {
         type: String,
         required: true,
-        unique: true,
+        // unique: true,
         index: true,
     },
     name: {
@@ -34,7 +34,7 @@ var orderSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    orderedAt:{
+    orderedAt: {
         type: Date,
         required: true,
         default: Date.now
