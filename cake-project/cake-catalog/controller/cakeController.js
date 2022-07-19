@@ -57,7 +57,7 @@ exports.getCakeByPrice = (req, res) => {
 //add cake to the cart
 exports.addItemToCart = (req, res) => {
      //console.log("Add Item to the basket...");
-     cakeModel.insertOne({ name: req.params.name }, (err, cakes) => {
+     cakeModel.create({ name: req.params.name }, (err, cakes) => {
         if (err) {
             res.send(err);
         } else {
